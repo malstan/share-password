@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePasswordRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -11,9 +12,11 @@ class PasswordShareController extends Controller
         return Inertia::render('SharePassword');
     }
 
-    public function store(Request $request) {
+    public function store(StorePasswordRequest $request) {
+        $validated = $request->validated();
+
         return response()->json([
-            "link" => "dajheslo.sk/heslo/123456"
+            "data" => $validated
         ]);
     }
 
