@@ -9,18 +9,16 @@ export default {
         extend: {
             backgroundImage: {
                 "dafault-pattern":
-                    "linear-gradient(60deg, rgba(244,194,55,1) 0%, rgba(255,130,62,1) 43%, rgba(127,60,181,1) 100%)",
+                    "linear-gradient(60deg, rgba(222,195,0,1) 0%, rgba(166,214,27,1) 48%, rgba(9,96,150,1) 100%)",
                 "complementary-pattern":
-                    "linear-gradient(60deg, rgba(55,105,244,1) 0%, rgba(62,187,255,1) 43%, rgba(114,181,60,1) 100%)",
+                    "linear-gradient(60deg, rgba(9,96,150,1) 0%, rgba(166,214,27,1) 52%, rgba(222,195,0,1) 100%)",
             },
             colors: {
-                color1: "#f4c237",
-                color1c: "#3769f4",
-                color2: "#ff823e",
-                color2c: "#3ebbff",
-                color3: "#7025ad",
-                color3c: "#72b53c",
+                color1: "#dec300",
+                color2: "#a6d61b",
+                color3: "#096096",
                 glass: "rgba(255, 255, 255, 0.15)",
+                glass2: "rgba(0, 0, 0, 0.3)",
             },
         },
     },
