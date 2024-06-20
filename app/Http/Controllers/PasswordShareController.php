@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePasswordRequest;
+use App\Models\SharedPassword;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -20,14 +21,14 @@ class PasswordShareController extends Controller
         ]);
     }
 
-    public function collecting(string $id) {
-       return Inertia::render('CollectPassword', [
-        "expiration" => "30.6.2024",
-        "id" => "123456"
-       ]);
+    public function collecting(string $hash) {
+        return Inertia::render('CollectPassword', [
+            "expiration" => "30.6.2024",
+            "id" => "123456"
+        ]);
     }
 
-    public function collect(string $id) {
+    public function collect(string $hash) {
         return response()->json([
             "password" => "pass123"
         ]);
