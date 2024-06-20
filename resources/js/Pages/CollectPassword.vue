@@ -1,23 +1,23 @@
 <template>
     <WebLayout>
         <div
-            class="bg-complementary-pattern rounded-2xl px-12 py-20 text-center border border-gray-600"
+            class="bg-complementary-pattern rounded-2xl px-5 py-20 text-center border border-color4 xs:px-12"
         >
             <!-- collect password -->
-            <div v-if="!password" class="mt-12 max-w-96 mx-auto">
-                <h1 class="text-5xl text-gray-600 font-bold">
+            <div v-if="!password" class="max-w-96 mx-auto">
+                <h1 class="text-4xl text-color4 font-bold xs:text-5xl">
                     Heslo pripravené
                 </h1>
 
-                <p class="text-gray-600 text-xl mt-6">
+                <p class="text-color4 text-lg mt-6 xs:text-xl">
                     Link expiruje {{ expiration }}
                 </p>
-                <p class="text-gray-600 text-lg mt-4">
+                <p class="text-color4 text-md mt-4 xs:text-xl">
                     Heslo je po získaní odstránené z našej databázy.
                 </p>
 
                 <button
-                    class="block mx-auto mt-16 text-2xl bg-color1 py-4 px-8 rounded-xl text-gray-600 font-semibold hover:text-gray-300 hover:bg-color3 duration-300 ease-in-out"
+                    class="block mx-auto mt-16 text-xl bg-color3 py-4 px-8 rounded-xl text-gray-300 font-semibold hover:text-color4 hover:bg-color1 duration-300 ease-in-out xs:text-2xl"
                     @click="collectPassword()"
                 >
                     Získaj heslo
@@ -25,21 +25,21 @@
             </div>
 
             <!-- password -->
-            <div v-else class="mt-12 max-w-96 mx-auto">
-                <h1 class="text-5xl text-gray-600 font-bold">Heslo získané</h1>
+            <div v-else class="max-w-96 mx-auto">
+                <h1 class="text-4xl text-color4 font-bold xs:text-5xl">
+                    Heslo získané
+                </h1>
 
-                <p class="text-gray-600 text-lg mt-4">
+                <p class="text-color4 text-md mt-4 xs:text-lg">
                     Heslo je získané a odstránené z našej databázy.
                 </p>
 
-                <p
-                    class="bg-glass text-gray-600 mt-8 rounded text-2xl px-6 py-2"
-                >
+                <p class="bg-glass text-color4 mt-8 rounded text-2xl px-6 py-2">
                     {{ password }}
                 </p>
 
                 <button
-                    class="block mx-auto mt-10 text-2xl bg-color1 py-4 px-8 rounded-xl text-gray-600 font-semibold hover:text-gray-300 hover:bg-color3 duration-300 ease-in-out"
+                    class="block mx-auto mt-10 text-xl bg-color3 py-4 px-8 rounded-xl text-gray-300 font-semibold hover:text-color4 hover:bg-color1 duration-300 ease-in-out xs:text-2xl"
                     @click="copyPassword()"
                 >
                     Kopírovať

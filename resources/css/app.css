@@ -8,3 +8,8 @@
         font-family: "Mada", system-ui, sans-serif;
     }
 }
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}

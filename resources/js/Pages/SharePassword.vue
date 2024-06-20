@@ -1,16 +1,20 @@
 <template>
     <WebLayout>
         <div
-            class="bg-dafault-pattern rounded-2xl px-12 py-20 text-center relative border border-gray-600"
+            class="bg-dafault-pattern rounded-2xl px-5 py-20 text-center relative border border-color4"
         >
-            <h1 class="text-5xl text-gray-600 font-bold">Zdieľaj heslo</h1>
-            <h2 class="text-4xl text-gray-600 font-bold mt-8">
+            <h1 class="text-4xl text-color4 font-bold xs:text-5xl">
+                Zdieľaj heslo
+            </h1>
+            <h2 class="text-2xl text-color4 font-bold mt-8 xs:text-4xl">
                 rýchlo, jednoducho, bezpečne
             </h2>
 
             <!-- password input -->
             <div v-if="!link">
-                <div class="mt-20 max-w-96 mx-auto flex flex-col items-end">
+                <div
+                    class="mt-14 max-w-96 mx-auto flex flex-col items-end xs:mt-20"
+                >
                     <button
                         class="mb-2 cursor-pointer"
                         @click="settingsOpen = true"
@@ -20,7 +24,7 @@
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
-                            class="stroke-gray-600 size-6 hover:stroke-color3 duration-300 ease-in-out"
+                            class="stroke-color4 size-6 hover:stroke-color3 duration-300 ease-in-out"
                         >
                             <path
                                 stroke-linecap="round"
@@ -34,15 +38,56 @@
                             />
                         </svg>
                     </button>
-                    <input
-                        class="bg-glass w-full text-gray-600 placeholder-gray-500 border border-gray-600 rounded text-2xl px-6 py-2 outline-none focus:border-color3 duration-500 ease-in-out"
-                        autocomplete="off"
-                        v-model="password"
-                        placeholder="heslo"
-                        type="password"
-                    />
+
+                    <div class="relative w-full">
+                        <input
+                            class="bg-glass w-full text-color4 placeholder-color4 border border-color4 rounded text-lg pl-6 pr-10 py-2 outline-none focus:border-color3 duration-500 ease-in-out xs:text-xl"
+                            autocomplete="off"
+                            v-model="password"
+                            placeholder="heslo"
+                            :type="showPassword ? 'text' : 'password'"
+                        />
+                        <span
+                            class="cursor-pointer absolute right-3 top-3"
+                            @click="showPassword = !showPassword"
+                        >
+                            <svg
+                                v-if="!showPassword"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                class="size-6 stroke-color4 hover:stroke-color3"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                                />
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                                />
+                            </svg>
+                            <svg
+                                v-else
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                class="size-6 stroke-color4 hover:stroke-color3"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"
+                                />
+                            </svg>
+                        </span>
+                    </div>
                     <button
-                        class="block mt-2 mr-1 text-gray-600 hover:text-color3 duration-300 ease-in-out"
+                        class="block mt-2 mr-1 text-color4 hover:text-color3 duration-300 ease-in-out"
                         @click="generateStrongPassword()"
                     >
                         Vygenerovať silné heslo
@@ -50,7 +95,7 @@
                 </div>
 
                 <button
-                    class="block cursor-pointer mx-auto mt-16 text-2xl bg-color3 py-4 px-8 rounded-xl text-gray-300 font-semibold hover:bg-color1 hover:text-gray-600 duration-300 ease-in-out"
+                    class="block cursor-pointer mx-auto mt-16 text-xl bg-color3 py-4 px-8 rounded-xl text-gray-300 font-semibold hover:bg-color1 hover:text-color4 duration-300 ease-in-out xs:text-2xl"
                     @click="generatePasswordLink()"
                 >
                     Zdieľať
@@ -63,12 +108,12 @@
                     class="mt-24 max-w-[30rem] mx-auto flex flex-col items-end"
                 >
                     <p
-                        class="w-full text-gray-700 text-2xl rounded bg-glass px-6 py-2"
+                        class="w-full text-color4 text-2xl rounded bg-glass px-6 py-2"
                     >
                         {{ link }}
                     </p>
                     <button
-                        class="block mt-2 mr-1 text-gray-700 hover:text-color3 duration-300 ease-in-out"
+                        class="block mt-2 mr-1 text-color4 hover:text-color3 duration-300 ease-in-out"
                         @click="reset()"
                     >
                         Ešte raz
@@ -76,7 +121,7 @@
                 </div>
 
                 <button
-                    class="block mx-auto mt-16 text-2xl bg-color3 py-4 px-8 rounded-xl text-gray-700 font-semibold hover:bg-color1 duration-300 ease-in-out"
+                    class="block mx-auto mt-16 text-xl bg-color3 py-4 px-8 rounded-xl text-gray-300 font-semibold hover:bg-color1 hover:text-color4 duration-300 ease-in-out xs:text-2xl"
                     @click="copyPassword()"
                 >
                     Kopírovať
@@ -86,7 +131,7 @@
             <!-- popup settings -->
             <div
                 v-if="settingsOpen"
-                class="bg-glass w-5/6 max-w-xl max-h-96 absolute inset-0 m-auto backdrop-blur-lg rounded-2xl border border-gray-700 py-12 px-4"
+                class="bg-glass w-5/6 max-w-xl max-h-96 absolute inset-0 m-auto backdrop-blur-lg rounded-2xl border border-color4 py-12 px-4"
             >
                 <button
                     @click="settingsOpen = !settingsOpen"
@@ -97,7 +142,7 @@
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
-                        class="stroke-gray-800 size-8 hover:stroke-color3 duration-300 ease-in-out"
+                        class="stroke-color4 size-8 hover:stroke-color3 duration-300 ease-in-out"
                     >
                         <path
                             stroke-linecap="round"
@@ -107,7 +152,7 @@
                     </svg>
                 </button>
 
-                <p class="text-gray-800 text-lg mb-3">
+                <p class="text-color4 text-lg mb-3">
                     Link expiruje o
                     {{ timeLabels[parseInt(expiration)] }}.
                 </p>
@@ -119,7 +164,7 @@
                     v-model="expiration"
                 />
 
-                <p class="text-gray-800 text-lg mt-5 mb-3">
+                <p class="text-color4 text-lg mt-5 mb-3">
                     Počet otvorení:
                     {{ openings }}
                 </p>
@@ -131,14 +176,14 @@
                     v-model="openings"
                 />
 
-                <p class="text-gray-800 text-lg mt-5 mb-3">
+                <p class="text-color4 text-lg mt-5 mb-3">
                     Fráza na odomknutie hesla:
                 </p>
                 <input
                     type="text"
                     placeholder="Nepovinné"
                     v-model="passphase"
-                    class="bg-glass w-full max-w-xs text-gray-800 placeholder-gray-700 border border-gray-700 rounded text-md px-5 py-2 outline-none focus:border-color3 duration-500 ease-in-out"
+                    class="bg-glass w-full max-w-xs text-color4 placeholder-color4 border border-color4 rounded text-md px-5 py-2 outline-none focus:border-color3 duration-500 ease-in-out"
                 />
             </div>
         </div>
@@ -152,8 +197,11 @@ const password = ref("");
 const expiration = ref("4");
 const openings = ref("1");
 const passphase = ref("");
-const settingsOpen = ref(false);
 
+const link = ref("");
+
+const settingsOpen = ref(false);
+const showPassword = ref(false);
 const timeLabels = [
     "30 minút",
     "1 hodina",
@@ -171,8 +219,10 @@ const timeLabels = [
     "10 dní",
 ];
 
-const link = ref("");
-
+/**
+ * Function send request with settings and password.
+ * It gets link to collect password.
+ */
 async function generatePasswordLink() {
     const data = {
         password: password.value,
@@ -185,22 +235,39 @@ async function generatePasswordLink() {
         .post("/password", data)
         .then((response) => {
             console.log(response);
+            link.value = "sdfdf";
         })
         .catch((error) => {
             console.log(error);
         });
 }
 
+/**
+ * Function generates strong password.
+ * length 14, numbers, symbols, upper case, lower case
+ */
 function generateStrongPassword() {
     password.value = "fsdgdrg1gd45f5df";
 }
 
+/**
+ * Function saves password to clipboard.
+ */
 function copyPassword() {
     console.log("copy password");
 }
 
+/**
+ * Function clears all variable to default values.
+ */
 function reset() {
     password.value = "";
+    expiration.value = "4";
+    openings.value = "1";
+    passphase.value = "";
+
     link.value = "";
+
+    settingsOpen.value = false;
 }
 </script>
