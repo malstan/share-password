@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 Route::controller(PasswordShareController::class)->group(function() {
     Route::post('password', 'store');
 
-    Route::get('password/{hash}', 'collect');
+    Route::get('password/{uuid}', 'collect');
 });
 
 

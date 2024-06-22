@@ -27,7 +27,7 @@ class StorePasswordRequest extends FormRequest
             'password' => 'required|string',
             'expiration' => 'required|integer|min:0|max:13',
             'openings' => 'required|integer|min:1|max:5',
-            'passphase' => 'string'
+            'passphase' => 'nullable|string'
         ];
     }
 

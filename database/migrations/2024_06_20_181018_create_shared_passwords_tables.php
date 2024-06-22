@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('shared_passwords', function (Blueprint $table) {
             $table->uuid()->primary();
             $table->string('password');
+            $table->string('mac')->nullable();
             $table->timestamp('expiration')->default(now()->addDay());
             $table->integer('openings')->default(1);
             $table->string('passphase')->nullable();
