@@ -42,7 +42,7 @@ class PasswordShareController extends Controller
 
         return response()->json([
             "link" => url('/') . "/heslo/" .$new_password->link
-        ], 201);
+        ], 200);
     }
 
     /**

@@ -4,13 +4,26 @@
             class="bg-complementary-pattern rounded-2xl px-5 py-20 text-center border border-color4 xs:px-12"
         >
             <!-- collect password -->
-            <div v-if="!password" class="max-w-96 mx-auto">
+            <div v-if="!password" class="mx-auto">
                 <h1 class="text-4xl text-color4 font-bold xs:text-5xl">
                     Heslo pripravené
                 </h1>
 
                 <p class="text-color4 text-lg mt-6 xs:text-xl">
-                    Link expiruje {{ expiration }}
+                    Link expiruje
+                    <strong>
+                        {{
+                            moment
+                                .tz(expiration, "YYYY-MM-DD HH:mm:ss", "UTC")
+                                .tz(moment.tz.guess())
+                                .format("HH:mm:ss DD.MM.YYYY")
+                        }}
+                    </strong>
+                    .
+                </p>
+                <p class="text-color4 text-lg mt-6 xs:text-xl">
+                    Počet získaní hesla <strong>{{ openings }}</strong
+                    >.
                 </p>
                 <p class="text-color4 text-md mt-4 xs:text-xl">
                     Heslo je po získaní odstránené z našej databázy.
@@ -49,16 +62,20 @@
     </WebLayout>
 </template>
 <script setup>
-import WebLayout from "../Layouts/WebLayout.vue";
 import { ref } from "vue";
+import WebLayout from "../Layouts/WebLayout.vue";
+import moment from "moment-timezone";
 
-const props = defineProps({ expiration: String, id: String });
+const props = defineProps({ expiration: String, openings: Number });
 
 const password = ref("");
 
 async function collectPassword() {
+    const url = window.location.href;
     await axios
-        .get(`/heslo/zis/${props.id}`)
+        .post("/api/password/collect", {
+            hash: url.substring(url.lastIndexOf("/") + 1),
+        })
         .then((response) => {
             if (response.status == 200) password.value = response.data.password;
         })

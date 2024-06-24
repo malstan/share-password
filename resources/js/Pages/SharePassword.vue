@@ -95,8 +95,9 @@
                 </div>
 
                 <button
-                    class="block cursor-pointer mx-auto mt-16 text-xl bg-color3 py-4 px-8 rounded-xl text-gray-300 font-semibold hover:bg-color1 hover:text-color4 duration-300 ease-in-out xs:text-2xl"
+                    class="block cursor-pointer mx-auto mt-16 text-xl bg-color3 py-4 px-8 rounded-xl text-gray-300 font-semibold hover:bg-color1 hover:text-color4 duration-300 ease-in-out xs:text-2xl disabled:hover:bg-color3 disabled:hover:text-gray-300 disabled:cursor-default"
                     @click="generatePasswordLink()"
+                    :disabled="password == ''"
                 >
                     Zdieľať
                 </button>
@@ -232,10 +233,10 @@ async function generatePasswordLink() {
     };
 
     await axios
-        .post("/password", data)
+        .post("/api/password", data)
         .then((response) => {
-            console.log(response);
-            link.value = "sdfdf";
+            if (response.status == 200);
+            link.value = response.data.link;
         })
         .catch((error) => {
             console.log(error);
