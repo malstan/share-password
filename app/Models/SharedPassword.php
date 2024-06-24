@@ -38,10 +38,12 @@ class SharedPassword extends Model
      * 
      * @return void
      */
-    public function setPasswordAttribute(string $value) {
-        $encrypted_password = Crypt::encryptString($value);
-
-        $this->attributes['password'] = $encrypted_password;
+    public function setPasswordAttribute(string | null $value) {
+        if ($value != null) {
+            $encrypted_password = Crypt::encryptString($value);
+            $this->attributes['password'] = $encrypted_password;
+        } else 
+            $this->attributes['password'] = null;
     }
 
     /**
@@ -139,5 +141,9 @@ class SharedPassword extends Model
                 return $now->modify('+1 day');
                 break;
         }
+    }
+
+    public function canCollect() {
+        return $this->openings > 0 && $this->expiration > now();
     }
 }
