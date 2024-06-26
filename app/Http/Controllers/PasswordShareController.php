@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePasswordRequest;
-use App\Http\Resources\SharedPasswordResource;
 use App\Models\SharedPassword;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
-class PasswordShareController extends Controller
+class PasswordShareController
 {
 
     /**
@@ -55,10 +55,19 @@ class PasswordShareController extends Controller
     public function collecting(string $hash) {
         $password = SharedPassword::where('link', $hash)->first();
 
-        return Inertia::render('CollectPassword', [
+        if(!$password)
+            return Inertia::render('NoPassword');
+
+        $data = [
             "expiration" => $password->expiration,
-            "openings" => $password->openings
-        ]);
+            "openings" => $password->openings,
+            "isPassphase" => isset($password->passphase)
+        ];
+
+        if($password->canCollect())
+            return Inertia::render('CollectPassword', $data);
+        
+        return Inertia::render('ExpiredPassword', $data);
     }
 
     /**
@@ -83,7 +92,18 @@ class PasswordShareController extends Controller
         // get password
         $password = SharedPassword::where('link', $validated['hash'])->first();
 
-        if(!$password || !$password->canCollect())
+        // check passphase
+        if(!Hash::check($validated['passphase'], $password->passphase)) 
+            return response()->json([
+                "error" => "passphase"
+            ], 400);
+
+        // check record
+        if(!$password)
+            return Inertia::render('NoPassword');
+
+        // check collecting
+        if(!$password->canCollect())
             return Inertia::render('CollectPassword', [
                 "expiration" => $password->expiration,
                 "openings" => $password->openings
@@ -92,8 +112,10 @@ class PasswordShareController extends Controller
         $password_to_return = $password->password;
         $password->openings -= 1;
         
-        if($password->openings <= 0)
+        if($password->openings <= 0) {
             $password->password = null;
+            $password->passphase = null;
+        }
 
         $password->save();
 

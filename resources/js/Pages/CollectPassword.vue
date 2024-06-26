@@ -9,8 +9,8 @@
                     Heslo pripravené
                 </h1>
 
-                <p class="text-color4 text-lg mt-6 xs:text-xl">
-                    Link expiruje
+                <p class="text-color4 text-lg mt-16 xs:text-xl">
+                    Expirácia:
                     <strong>
                         {{
                             moment
@@ -19,19 +19,30 @@
                                 .format("HH:mm:ss DD.MM.YYYY")
                         }}
                     </strong>
-                    .
                 </p>
-                <p class="text-color4 text-lg mt-6 xs:text-xl">
-                    Počet získaní hesla <strong>{{ openings }}</strong
-                    >.
+                <p class="text-color4 text-lg mt-3 xs:text-xl">
+                    Zostávajúci počet získaní: <strong>{{ openings }}</strong>
                 </p>
-                <p class="text-color4 text-md mt-4 xs:text-xl">
+                <div v-if="isPassphase">
+                    <p class="text-color4 text-lg mt-6 xs:text-xl">
+                        Získanie hesla si vyžaduje zadať frázu.
+                    </p>
+                    <input
+                        type="text"
+                        placeholder="Fráza"
+                        v-model="passphase"
+                        class="bg-glass w-full max-w-xs text-color4 placeholder-color4 border border-color4 rounded text-md px-5 py-2 mt-3 outline-none focus:border-color3 duration-500 ease-in-out"
+                    />
+                </div>
+
+                <p class="text-color4 text-md mt-12 xs:text-xl">
                     Heslo je po získaní odstránené z našej databázy.
                 </p>
 
                 <button
-                    class="block mx-auto mt-16 text-xl bg-color3 py-4 px-8 rounded-xl text-gray-300 font-semibold hover:text-color4 hover:bg-color1 duration-300 ease-in-out xs:text-2xl"
+                    class="block mx-auto mt-12 text-xl bg-color3 py-4 px-8 rounded-xl text-gray-300 font-semibold hover:text-color4 hover:bg-color1 duration-300 ease-in-out xs:text-2xl disabled:hover:bg-color3 disabled:hover:text-gray-300 disabled:cursor-default"
                     @click="collectPassword()"
+                    :disabled="isPassphase && passphase == ''"
                 >
                     Získaj heslo
                 </button>
@@ -43,7 +54,7 @@
                     Heslo získané
                 </h1>
 
-                <p class="text-color4 text-md mt-4 xs:text-lg">
+                <p class="text-color4 text-md mt-16 xs:text-lg">
                     Heslo je získané a odstránené z našej databázy.
                 </p>
 
@@ -66,8 +77,13 @@ import { ref } from "vue";
 import WebLayout from "../Layouts/WebLayout.vue";
 import moment from "moment-timezone";
 
-const props = defineProps({ expiration: String, openings: Number });
+const props = defineProps({
+    expiration: String,
+    openings: Number,
+    isPassphase: Boolean,
+});
 
+const passphase = ref("");
 const password = ref("");
 
 async function collectPassword() {
@@ -75,6 +91,7 @@ async function collectPassword() {
     await axios
         .post("/api/password/collect", {
             hash: url.substring(url.lastIndexOf("/") + 1),
+            passphase: props.isPassphase ? passphase.value : undefined,
         })
         .then((response) => {
             if (response.status == 200) password.value = response.data.password;

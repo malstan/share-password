@@ -87,7 +87,7 @@
                         </span>
                     </div>
                     <button
-                        class="block mt-2 mr-1 text-color4 hover:text-color3 duration-300 ease-in-out"
+                        class="block mt-2 mr-1 text-color4 hover:text-color3 duration-300 ease-in-out underline"
                         @click="generateStrongPassword()"
                     >
                         Vygenerovať silné heslo
@@ -114,7 +114,7 @@
                         {{ link }}
                     </p>
                     <button
-                        class="block mt-2 mr-1 text-color4 hover:text-color3 duration-300 ease-in-out"
+                        class="block mt-2 mr-1 text-color4 hover:text-color3 duration-300 ease-in-out underline"
                         @click="reset()"
                     >
                         Ešte raz

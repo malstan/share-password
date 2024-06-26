@@ -31,6 +31,10 @@ class SharedPassword extends Model
         'link'
     ];
 
+    protected $casts = [
+        'passphase' => 'hashed'
+    ];
+
     /**
      * encrypt password before saving to database
      * 
@@ -71,7 +75,6 @@ class SharedPassword extends Model
                 'message' => 'Password was modified.',
             ], 500));
     }
-
 
     /**
      * set expiration datetime based on input
