@@ -11,7 +11,7 @@
             </h2>
 
             <!-- password input -->
-            <div v-if="!link">
+            <div>
                 <div
                     class="mt-14 max-w-96 mx-auto flex flex-col items-end xs:mt-20"
                 >
@@ -94,39 +94,21 @@
                     </button>
                 </div>
 
-                <button
+                <Link
                     class="block cursor-pointer mx-auto mt-16 text-xl bg-color3 py-4 px-8 rounded-xl text-gray-300 font-semibold hover:bg-color1 hover:text-color4 duration-300 ease-in-out xs:text-2xl disabled:hover:bg-color3 disabled:hover:text-gray-300 disabled:cursor-default"
-                    @click="generatePasswordLink()"
                     :disabled="password == ''"
+                    as="button"
+                    href="/heslo/link"
+                    method="post"
+                    :data="{
+                        password: password,
+                        expiration: expiration,
+                        openings: openings,
+                        passphase: passphase || undefined,
+                    }"
                 >
                     Zdieľať
-                </button>
-            </div>
-
-            <!-- password share -->
-            <div v-else>
-                <div
-                    class="mt-24 max-w-[30rem] mx-auto flex flex-col items-end"
-                >
-                    <p
-                        class="w-full text-color4 text-2xl rounded bg-glass px-6 py-2"
-                    >
-                        {{ link }}
-                    </p>
-                    <button
-                        class="block mt-2 mr-1 text-color4 hover:text-color3 duration-300 ease-in-out underline"
-                        @click="reset()"
-                    >
-                        Ešte raz
-                    </button>
-                </div>
-
-                <button
-                    class="block mx-auto mt-16 text-xl bg-color3 py-4 px-8 rounded-xl text-gray-300 font-semibold hover:bg-color1 hover:text-color4 duration-300 ease-in-out xs:text-2xl"
-                    @click="copyPassword()"
-                >
-                    Kopírovať
-                </button>
+                </Link>
             </div>
 
             <!-- popup settings -->
@@ -192,14 +174,13 @@
 </template>
 <script setup>
 import WebLayout from "../Layouts/WebLayout.vue";
+import { Link } from "@inertiajs/vue3";
 import { ref } from "vue";
 
 const password = ref("");
 const expiration = ref("4");
 const openings = ref("1");
 const passphase = ref("");
-
-const link = ref("");
 
 const settingsOpen = ref(false);
 const showPassword = ref(false);
@@ -221,54 +202,10 @@ const timeLabels = [
 ];
 
 /**
- * Function send request with settings and password.
- * It gets link to collect password.
- */
-async function generatePasswordLink() {
-    const data = {
-        password: password.value,
-        expiration: expiration.value,
-        openings: openings.value,
-        passphase: passphase.value || undefined,
-    };
-
-    await axios
-        .post("/api/password", data)
-        .then((response) => {
-            if (response.status == 200);
-            link.value = response.data.link;
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-}
-
-/**
  * Function generates strong password.
  * length 14, numbers, symbols, upper case, lower case
  */
 function generateStrongPassword() {
     password.value = "fsdgdrg1gd45f5df";
-}
-
-/**
- * Function saves password to clipboard.
- */
-function copyPassword() {
-    console.log("copy password");
-}
-
-/**
- * Function clears all variable to default values.
- */
-function reset() {
-    password.value = "";
-    expiration.value = "4";
-    openings.value = "1";
-    passphase.value = "";
-
-    link.value = "";
-
-    settingsOpen.value = false;
 }
 </script>

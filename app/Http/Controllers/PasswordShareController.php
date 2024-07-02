@@ -24,12 +24,21 @@ class PasswordShareController
     /**
      * store password in database and returns link for collecting
      * 
-     * @param StorePasswordRequest $request - contains password, expiration?, openings?, passphase?
+     * @param Request $request - contains password, expiration?, openings?, passphase?
      * 
      * @return json response with link
      */
-    public function store(StorePasswordRequest $request) {
-        $validated = $request->validated();
+    public function store(Request $request) {
+        $validator = Validator::make($request->all(),  [
+            'password' => 'required|string',
+            'expiration' => 'required|integer|min:0|max:13',
+            'openings' => 'required|integer|min:1|max:5',
+            'passphase' => 'nullable|string'
+        ]);
+        if($validator->fails())
+            return Inertia::render('SharePassword');
+
+        $validated = $validator->validated();
 
         $new_password = SharedPassword::create($validated);
 
@@ -40,9 +49,7 @@ class PasswordShareController
 
         $new_password->save();
 
-        return response()->json([
-            "link" => url('/') . "/heslo/" .$new_password->link
-        ], 200);
+        return Inertia::render("ShareLink", ["link" => url('/') . "/heslo/" .$new_password->link]);
     }
 
     /**
@@ -88,25 +95,27 @@ class PasswordShareController
             return Inertia::render('SharePassword');
 
         $validated = $validator->validated();
-        
         // get password
         $password = SharedPassword::where('link', $validated['hash'])->first();
 
-        // check passphase
-        if(!Hash::check($validated['passphase'], $password->passphase)) 
-            return response()->json([
-                "error" => "passphase"
-            ], 400);
-
-        // check record
+        // check if record exists
         if(!$password)
             return Inertia::render('NoPassword');
 
-        // check collecting
+        // check if can be collected collecting
         if(!$password->canCollect())
-            return Inertia::render('CollectPassword', [
+            return Inertia::render('ExpiredPassword', [
                 "expiration" => $password->expiration,
                 "openings" => $password->openings
+            ]);
+
+        // check passphase
+        if((isset($validated['passphase']) && isset($password->passphase)) && !Hash::check($validated['passphase'], $password->passphase)) 
+            return Inertia::render('CollectPassword', [
+                "expiration" => $password->expiration,
+                "openings" => $password->openings,
+                "isPassphase" => true,
+                "passphaseError" => true
             ]);
 
         $password_to_return = $password->password;
@@ -119,8 +128,6 @@ class PasswordShareController
 
         $password->save();
 
-        return response()->json([
-            "password" => $password_to_return
-        ]);
+        return Inertia::render('CollectedPassword', ["password" => $password_to_return]);
     }
 }
