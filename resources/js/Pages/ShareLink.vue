@@ -17,6 +17,7 @@
                 >
                     <p
                         class="w-full text-color4 text-2xl rounded bg-glass px-6 py-2"
+                        :class="coppied"
                     >
                         {{ link }}
                     </p>
@@ -30,7 +31,7 @@
 
                 <button
                     class="block mx-auto mt-16 text-xl bg-color3 py-4 px-8 rounded-xl text-gray-300 font-semibold hover:bg-color1 hover:text-color4 duration-300 ease-in-out xs:text-2xl"
-                    @click="copyPassword()"
+                    @click="copyLink()"
                 >
                     Kopírovať
                 </button>
@@ -43,12 +44,18 @@ import WebLayout from "../Layouts/WebLayout.vue";
 import { Link } from "@inertiajs/vue3";
 import { ref } from "vue";
 
-defineProps({ link: String });
+const props = defineProps({ link: String });
+const coppied = ref("");
 
 /**
  * Function saves link to clipboard.
  */
 function copyLink() {
-    console.log("copy link");
+    navigator.clipboard.writeText(props.link);
+
+    coppied.value = "animate-ping";
+    setTimeout(() => {
+        coppied.value = "";
+    }, 750);
 }
 </script>

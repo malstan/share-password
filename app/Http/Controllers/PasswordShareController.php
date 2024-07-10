@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePasswordRequest;
 use App\Models\SharedPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;

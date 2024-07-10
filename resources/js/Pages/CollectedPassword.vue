@@ -12,7 +12,10 @@
                     Heslo je získané a odstránené z našej databázy.
                 </p>
 
-                <p class="bg-glass text-color4 mt-8 rounded text-2xl px-6 py-2">
+                <p
+                    class="bg-glass text-color4 mt-8 rounded text-2xl px-6 py-2"
+                    :class="coppied"
+                >
                     {{ password }}
                 </p>
 
@@ -30,9 +33,15 @@
 import { ref } from "vue";
 import WebLayout from "../Layouts/WebLayout.vue";
 
-const props = defineProps({
-    password: String,
-});
+const props = defineProps({ password: String });
+const coppied = ref("");
 
-function copyPassword() {}
+function copyPassword() {
+    navigator.clipboard.writeText(props.password);
+
+    coppied.value = "animate-ping";
+    setTimeout(() => {
+        coppied.value = "";
+    }, 750);
+}
 </script>

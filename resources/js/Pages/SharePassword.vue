@@ -206,6 +206,24 @@ const timeLabels = [
  * length 14, numbers, symbols, upper case, lower case
  */
 function generateStrongPassword() {
-    password.value = "fsdgdrg1gd45f5df";
+    const lowerChars = "abcdefghijklmnopqrstuvwxyz";
+    const upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const numbers = "0123456789";
+    const symbols = "!@#$%^&*()_+[]{}|;:,.<>?";
+
+    const allSymbols = lowerChars + upperChars + numbers + symbols;
+    const shuffled = allSymbols
+        .split("")
+        .sort(() => 0.5 - Math.random())
+        .join("");
+
+    let generatedPassword = "";
+
+    for (let i = 0; i < 12; i++) {
+        generatedPassword +=
+            shuffled[Math.floor(Math.random() * shuffled.length)];
+    }
+
+    password.value = generatedPassword;
 }
 </script>

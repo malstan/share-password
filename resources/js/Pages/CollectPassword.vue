@@ -79,6 +79,4 @@ const passphase = ref("");
 
 const url = window.location.href;
 const hash = url.substring(url.lastIndexOf("/") + 1);
-
-function copyPassword() {}
 </script>
